@@ -44,6 +44,30 @@ export async function renderTextLayers(
     totalHeight += FONT_SIZES.currentArtists;
   }
 
+  const elevationDef = `<defs>
+    <filter id="elevation" x="-50%" y="-50%" width="200%" height="200%">
+      <!-- Multiple shadow layers for depth -->
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur1"/>
+      <feOffset in="blur1" dx="0" dy="4" result="offsetBlur1"/>
+      <feComponentTransfer in="offsetBlur1" result="shadow1">
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur2"/>
+      <feOffset in="blur2" dx="0" dy="8" result="offsetBlur2"/>
+      <feComponentTransfer in="offsetBlur2" result="shadow2">
+        <feFuncA type="linear" slope="0.15"/>
+      </feComponentTransfer>
+      
+      <!-- Combine shadows -->
+      <feMerge result="shadows">
+        <feMergeNode in="shadow2"/>
+        <feMergeNode in="shadow1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>`;
+
   // Start Y position to center content vertically
   const centerY = LAYOUT.rightPanel.height / 2;
   let currentY = centerY - totalHeight / 2;
@@ -58,10 +82,12 @@ export async function renderTextLayers(
           font-weight: normal;
         }
       </style>
+      ${elevationDef}
       <text x="${centerX}" y="${FONT_SIZES.artist}"
         font-family="${FONTS.artist.family}, Arial, sans-serif"
         font-size="${FONT_SIZES.artist}"
         text-anchor="middle"
+          filter="url(#elevation)"
         fill="${config.colors.main}">
         ${artistName}
       </text>
@@ -85,11 +111,13 @@ export async function renderTextLayers(
           font-weight: 100;
         }
       </style>
+      ${elevationDef}
       <text x="${centerX}" y="${FONT_SIZES.album}"
         font-family="${FONTS.album.family}, Arial, sans-serif"
         font-size="${FONT_SIZES.album}"
         font-weight="100"
         text-anchor="middle"
+          filter="url(#elevation)"
         fill="${config.colors.primary}">
         ${albumName}
       </text>
@@ -119,11 +147,13 @@ export async function renderTextLayers(
             src: url('${FONTS.trackList.path}');
           }
         </style>
+        ${elevationDef}
         <text x="${centerX}" y="${FONT_SIZES.trackList}"
           font-family="${FONTS.trackList.family}, Arial, sans-serif"
           font-size="${FONT_SIZES.trackList}"
           font-style="${fontStyle}"
           text-anchor="middle"
+          filter="url(#elevation)"
           fill="${trackColor}">
           ${i + 1}. ${trackName}
         </text>
@@ -150,11 +180,13 @@ export async function renderTextLayers(
           src: url('${FONTS.currentSong.path}');
         }
       </style>
+      ${elevationDef}
       <text x="${centerX}" y="${FONT_SIZES.currentSong}"
         font-family="${FONTS.currentSong.family}, Arial, sans-serif"
         font-size="${FONT_SIZES.currentSong}"
         font-weight="bold"
         text-anchor="middle"
+        filter="url(#elevation)"
         fill="${config.colors.secondary}">
         ${currentSongName}
       </text>
@@ -179,10 +211,12 @@ export async function renderTextLayers(
             src: url('${FONTS.currentArtists.path}');
           }
         </style>
+        ${elevationDef}
         <text x="${centerX}" y="${FONT_SIZES.currentArtists}"
           font-family="Klima, Arial, sans-serif"
           font-size="${FONT_SIZES.currentArtists}"
           text-anchor="middle"
+          filter="url(#elevation)"
           fill="${config.colors.main}">
           ${artistsText}
         </text>

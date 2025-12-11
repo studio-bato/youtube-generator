@@ -1,5 +1,5 @@
 artist: "opac"
-album: "PAUSE-EP"
+album: "PAUSE"
 cover: "./example_cover.jpg"
 colors:
   main: "#ffffff"
@@ -8,20 +8,13 @@ colors:
 tracks:
   - name: "Banm Kalou Banm"
     artists: ["xoticboii"]
-  - name: "Collègue"
-    artists: ["xoticboii"]
+    audio: "./example_track.wav"
   - name: "Ramène-Le"
     artists: ["Al'Phao X xoticboii"]
-  - name: "Cocococonnard"
-    artists: ["xoticboii"]
-  - name: "Pause"
-    artists: ["xoticboii"]
-  - name: "Elysée"
-    artists: ["xoticboii"]
-  - name: "Métissage"
-    artists: ["xoticboii"]
+    audio: "./example_track.wav"
 #background: 
 #  blurBrightness: 0.6
-#  color: "#ea8d46"
+#  blurAmount: 30
 #  zoom: 10
+#  color: "#ea8d46"
 #hide_label: true

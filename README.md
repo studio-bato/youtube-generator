@@ -27,16 +27,20 @@ bun install
 ### Basic Usage
 
 ```bash
-bun run src/index.ts --config input/[album_name].yaml
+bun run src/index.ts --config input/[album_name].yaml -b
 ```
+
+Use first `-b` to generate background images then `-v` to generate videos. 
 
 ### Options
 
 ```
 -c, --config <path>   Path to YAML config file (required)
 -o, --output <path>   Output directory (default: ./output)
--h, --help           Display help
--V, --version        Display version
+-b, --background      Generate background covers
+-v, --video           Generate videos
+-h, --help            Display help
+-V, --version         Display version
 ```
 
 ## Configuration
@@ -54,15 +58,19 @@ colors:
 tracks:
   - name: "Track 1"
     artists: []
+    audio: "./path/to/audio.wav"
   - name: "Track 2"
     artists: ["Featured Artist"]
+    audio: "./path/to/audio.wav"
 ```
+
+See `example_config.yaml` for a complete example configuration.
 
 ### Configuration Fields
 
 - **artist** (required) - Name of the main artist
 - **album** (required) - Album name
-- **cover** (required) - Path to album cover image (square recommended)
+- **cover** (required) - Path to album cover image (square recommended, relative to config file)
 - **colors** (required) - Color scheme using hex colors (#RRGGBB)
   - **main** - Primary text color
   - **primary** - Album name color
@@ -70,12 +78,13 @@ tracks:
 - **tracks** (required) - Array of tracks
   - **name** - Track name
   - **artists** - Array of featured artists (optional, can be empty)
+  - **audio** - Array of featured artists (relative to config file)
 
 - **background** - Configuration for the text background
   - **blurBrightness** - Adjust brightness of the blurred cover (0-2)
   - **blurAmount** - Amount of blur (0-100)
-  - **color** - Do not blur image and use solid color instead
   - **zoom** - Zoom on the blurred image (in percent, 0-100)
+  - **color** - Do not blur image and use solid color instead
 
 - **hide_label** - (true/false) Hide label name (if already on cover)
 
@@ -100,18 +109,6 @@ Each image is 3840x2160 pixels (4K), perfect for high-quality YouTube videos.
   - Track list (Klima, current track highlighted in italic)
   - Current track name (Klima, bold)
   - Featured artists (Klima)
-
-## Example
-
-See `example_config.yaml` for a complete example configuration.
-
-```bash
-# Generate images from example
-bun run src/index.ts -c example_config.yaml
-
-# Check output
-ls output/YourAlbumName/
-```
 
 ## License
 

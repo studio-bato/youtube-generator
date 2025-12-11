@@ -73,7 +73,9 @@ tracks:
 
 - **background** - Configuration for the text background
   - **blurBrightness** - Adjust brightness of the blurred cover (0-2)
+  - **blurAmount** - Amount of blur (0-100)
   - **color** - Do not blur image and use solid color instead
+  - **zoom** - Zoom on the blurred image (in percent, 0-100)
 
 - **hide_label** - (true/false) Hide label name (if already on cover)
 

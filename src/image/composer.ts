@@ -31,9 +31,20 @@ export async function createBlurredBackground(
   coverPath: string,
   backgroundConfig: Config["background"]
 ): Promise<Buffer> {
-  return sharp(coverPath, {
-    unlimited: true, // Allow larger images
-  })
+  const image = sharp(coverPath);
+  const { width, height } = await image.metadata();
+  if (!width || !height) throw new Error("Cannnot read image size");
+
+  const extractPct = backgroundConfig.zoom / 100;
+  const extractOpts = {
+    left: extractPct * width,
+    top: extractPct * height,
+    width: width - 2 * extractPct * width,
+    height: width - 2 * extractPct * height,
+  };
+
+  return image
+    .extract(extractOpts)
     .resize(LAYOUT.rightPanel.width, LAYOUT.rightPanel.height, {
       fit: "cover",
       position: "center",
@@ -41,7 +52,7 @@ export async function createBlurredBackground(
     })
     .toColorspace("rgb16") // 16-bit processing
     .blur(10)
-    .blur(20)
+    .blur(backgroundConfig.blurAmount)
     .modulate({
       brightness: backgroundConfig.blurBrightness,
       saturation: 0.8,

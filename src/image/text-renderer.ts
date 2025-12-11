@@ -55,33 +55,29 @@ export async function renderTextLayers(
     totalHeight += spacingAfterCurrentSong + FONT_SIZES.currentArtists;
   }
 
-  const elevationDef = `<defs>
+  const stdDeviation = 8;
+  const slope = 0.4;
+  const dx = 4;
+  const dy = 6;
+  const elevationDef = `
+  <defs>
     <filter id="elevation" x="-50%" y="-50%" width="200%" height="200%">
-      <!-- Multiple shadow layers for depth -->
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur1"/>
-      <feOffset in="blur1" dx="0" dy="4" result="offsetBlur1"/>
-      <feComponentTransfer in="offsetBlur1" result="shadow1">
-        <feFuncA type="linear" slope="0.3"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="${stdDeviation}"/>
+      <feOffset dx="${dx}" dy="${dy}" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="${slope}"/>
       </feComponentTransfer>
-      
-      <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur2"/>
-      <feOffset in="blur2" dx="0" dy="8" result="offsetBlur2"/>
-      <feComponentTransfer in="offsetBlur2" result="shadow2">
-        <feFuncA type="linear" slope="0.15"/>
-      </feComponentTransfer>
-      
-      <!-- Combine shadows -->
-      <feMerge result="shadows">
-        <feMergeNode in="shadow2"/>
-        <feMergeNode in="shadow1"/>
+      <feMerge>
+        <feMergeNode/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-  </defs>`;
+  </defs>
+  `;
 
   if (!config.hide_label) {
     const studiobatoSVG = `
-    <svg width="${maxWidth}" height="${FONT_SIZES.label + 20}">
+    <svg width="${maxWidth}" height="${FONT_SIZES.label + 50}">
       <style>
         @font-face {
           font-family: '${FONTS.label.family}';
@@ -113,7 +109,7 @@ export async function renderTextLayers(
 
   currentY += FONT_SIZES.artist;
   const artistSvg = `
-    <svg width="${maxWidth}" height="${FONT_SIZES.artist + 20}">
+    <svg width="${maxWidth}" height="${FONT_SIZES.artist + 50}">
       <style>
         @font-face {
           font-family: '${FONTS.artist.family}';
@@ -142,7 +138,7 @@ export async function renderTextLayers(
 
   if (isAlbum) {
     const albumSvg = `
-    <svg width="${maxWidth}" height="${FONT_SIZES.album + 20}">
+    <svg width="${maxWidth}" height="${FONT_SIZES.album + 50}">
       <style>
         @font-face {
           font-family: '${FONTS.album.family}';
@@ -213,7 +209,7 @@ export async function renderTextLayers(
 
   const currentSongName = escapeXML(currentTrack.name);
   const currentSongSvg = `
-    <svg width="${maxWidth}" height="${FONT_SIZES.currentSong + 20}">
+    <svg width="${maxWidth}" height="${FONT_SIZES.currentSong + 50}">
       <style>
         @font-face {
           font-family: '${FONTS.currentSong.family}';
@@ -244,7 +240,7 @@ export async function renderTextLayers(
 
     const artistsText = escapeXML(currentTrack.artists.join(", "));
     const artistsSvg = `
-      <svg width="${maxWidth}" height="${FONT_SIZES.currentArtists + 20}">
+      <svg width="${maxWidth}" height="${FONT_SIZES.currentArtists + 50}">
         <style>
           @font-face {
             font-family: '${FONTS.currentArtists.family}';

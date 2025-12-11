@@ -15,6 +15,8 @@ export const backgroundSchema = z
         "Main color must be a valid hex color (e.g., #ffffff)"
       )
       .optional(),
+    zoom: z.number().min(0).max(100).default(0),
+    blurAmount: z.number().min(0).max(100).default(20),
   })
   .default({});
 

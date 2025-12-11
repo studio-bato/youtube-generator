@@ -23,4 +23,5 @@ tracks:
 #background: 
 #  blurBrightness: 0.6
 #  color: "#ea8d46"
+#  zoom: 10
 #hide_label: true

@@ -1,0 +1,110 @@
+# Coversyt - YouTube Music Video Background Generator
+
+Generate professional background images for YouTube music videos with album cover and track information.
+
+## Features
+
+- Generates one image per track for an entire album
+- Album cover on the left, blurred background with track info on the right
+- Fully customizable colors via YAML configuration
+- Custom font support (Clear Sans and Klima included)
+- High-quality 4K (3840x2160) PNG output
+
+## Installation
+
+### Requirements
+
+- Bun runtime
+- Album cover image (square format recommended)
+- Fonts included in `fonts/` directory
+
+```bash
+bun install
+```
+
+## Usage
+
+### Basic Usage
+
+```bash
+bun run src/index.ts --config input/[album_name].yaml
+```
+
+### Options
+
+```
+-c, --config <path>   Path to YAML config file (required)
+-o, --output <path>   Output directory (default: ./output)
+-h, --help           Display help
+-V, --version        Display version
+```
+
+## Configuration
+
+Create a YAML configuration file for your album:
+
+```yaml
+artist: "Artist Name"
+album: "Album Name"
+cover: "./path/to/cover.jpg"
+colors:
+  main: "#ffffff" # Primary text color
+  primary: "#ffa500" # Album name color
+  secondary: "#4a9eff" # Current track highlight
+tracks:
+  - name: "Track 1"
+    artists: []
+  - name: "Track 2"
+    artists: ["Featured Artist"]
+```
+
+### Configuration Fields
+
+- **artist** (required) - Name of the main artist
+- **album** (required) - Album name
+- **cover** (required) - Path to album cover image (square recommended)
+- **colors** (required) - Color scheme using hex colors (#RRGGBB)
+  - **main** - Primary text color
+  - **primary** - Album name color
+  - **secondary** - Current track highlight color
+- **tracks** (required) - Array of tracks
+  - **name** - Track name
+  - **artists** - Array of featured artists (optional, can be empty)
+
+## Output
+
+Images are generated in `./output/[album-name]/` directory with the following naming convention:
+
+```
+01-track-name.png
+02-another-track.png
+...
+```
+
+Each image is 3840x2160 pixels (4K), perfect for high-quality YouTube videos.
+
+## Layout
+
+- **Left panel (2160x2160)**: Album cover (square, full height)
+- **Right panel (1680x2160)**: Blurred + darkened album cover with text overlay
+  - Artist name (Clear Sans Regular)
+  - Album name (Clear Sans Thin)
+  - Track list (Klima, current track highlighted in italic)
+  - Current track name (Klima, bold)
+  - Featured artists (Klima)
+
+## Example
+
+See `example_config.yaml` for a complete example configuration.
+
+```bash
+# Generate images from example
+bun run src/index.ts -c example_config.yaml
+
+# Check output
+ls output/YourAlbumName/
+```
+
+## License
+
+MIT

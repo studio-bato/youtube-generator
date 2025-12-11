@@ -1,0 +1,22 @@
+{
+  "name": "coversyt",
+  "version": "1.0.0",
+  "description": "YouTube music video background image generator",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch src/index.ts",
+    "generate": "bun run src/index.ts --config"
+  },
+  "dependencies": {
+    "sharp": "^0.33.5",
+    "zod": "^3.23.8",
+    "commander": "^12.1.0",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^22.10.1"
+  }
+}

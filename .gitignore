@@ -1,0 +1,6 @@
+input/*
+test_output/*
+output/*
+node_modules
+fonts/
+.DS_Store

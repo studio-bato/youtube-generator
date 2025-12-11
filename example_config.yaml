@@ -1,0 +1,22 @@
+artist: "opac"
+album: "PAUSE-EP"
+cover: "./example_cover.jpg"
+colors:
+  main: "#ffffff"
+  primary: "#DAA520"
+  secondary: "#4A9EFF"
+tracks:
+  - name: "Banm Kalou Banm"
+    artists: ["xoticboii"]
+  - name: "Collègue"
+    artists: ["xoticboii"]
+  - name: "Ramène-Le"
+    artists: ["Al'Phao X xoticboii"]
+  - name: "Cocococonnard"
+    artists: ["xoticboii"]
+  - name: "Pause"
+    artists: ["xoticboii"]
+  - name: "Elysée"
+    artists: ["xoticboii"]
+  - name: "Métissage"
+    artists: ["xoticboii"]

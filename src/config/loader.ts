@@ -2,7 +2,7 @@ import { parse } from "yaml";
 import { configSchema, type Config } from "./schema";
 import { resolve, dirname } from "path";
 import { existsSync } from "fs";
-import { validateCoverImage } from "../utils/validation";
+import { validateCoverImage, validateTracks } from "../utils/validation";
 
 export class ConfigLoadError extends Error {
   constructor(message: string, public details?: unknown) {
@@ -29,6 +29,7 @@ export async function loadConfig(configPath: string): Promise<Config> {
 
     try {
       await validateCoverImage(coverPath);
+      validateTracks(validatedConfig, configDir);
     } catch (error) {
       if (error instanceof Error) {
         throw new ConfigLoadError(error.message);
@@ -36,17 +37,22 @@ export async function loadConfig(configPath: string): Promise<Config> {
       throw error;
     }
 
-    return {
-      ...validatedConfig,
-      cover: coverPath,
-    };
+    validatedConfig.cover = coverPath;
+    for (let track of validatedConfig.tracks) {
+      track.audio = resolve(configDir, track.audio);
+    }
+
+    return validatedConfig;
   } catch (error) {
     if (error instanceof ConfigLoadError) {
       throw error;
     }
 
     if (error instanceof Error) {
-      throw new ConfigLoadError(`Failed to load or validate config: ${error.message}`, error);
+      throw new ConfigLoadError(
+        `Failed to load or validate config: ${error.message}`,
+        error
+      );
     }
 
     throw new ConfigLoadError("Unknown error loading config", error);

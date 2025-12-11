@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const trackSchema = z.object({
   name: z.string().min(1, "Track name is required"),
+  audio: z.string().min(1, "Audio file is required"),
   artists: z.array(z.string()).default([]),
 });
 

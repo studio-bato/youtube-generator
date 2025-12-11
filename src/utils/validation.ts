@@ -2,6 +2,7 @@ import { existsSync } from "fs";
 import { resolve } from "path";
 import { FONT_PATHS } from "../image/layout";
 import sharp from "sharp";
+import { Config } from "@/config/schema";
 
 export class ValidationError extends Error {
   constructor(message: string) {
@@ -22,10 +23,28 @@ export function validateFonts(): void {
 
   if (missingFonts.length > 0) {
     throw new ValidationError(
-      `Missing font files:\n${missingFonts.map(f => `  - ${f}`).join("\n")}`
+      `Missing font files:\n${missingFonts.map((f) => `  - ${f}`).join("\n")}`
     );
   }
 }
+
+export function validateTracks(config: Config, configDir: string): void {
+  const missingTracks: string[] = [];
+
+  for (let track of config.tracks) {
+    let absolutePath = resolve(configDir, track.audio);
+    if (!existsSync(absolutePath)) {
+      missingTracks.push(`${track.name}: ${absolutePath}`);
+    }
+  }
+
+  if (missingTracks.length > 0) {
+    throw new ValidationError(
+      `Missing audio files:\n${missingTracks.map((f) => `  - ${f}`).join("\n")}`
+    );
+  }
+}
+
 
 export async function validateCoverImage(coverPath: string): Promise<void> {
   const absolutePath = resolve(coverPath);

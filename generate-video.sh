@@ -37,14 +37,14 @@ COLOR_OPTS="-colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_ran
 # Build ffmpeg command based on encoder choice
 if [ "$USE_VIDEOTOOLBOX" = true ]; then
     echo "Using VideoToolbox hardware acceleration..."
-    ffmpeg -loop 1 -framerate 1 -i "$IMAGE_FILE" -i "$AUDIO_FILE" \
+    ffmpeg -y -loop 1 -framerate 1 -i "$IMAGE_FILE" -i "$AUDIO_FILE" \
         -c:v h264_videotoolbox -b:v 5000k -q:v 75 \
         $COLOR_OPTS \
         -c:a copy -shortest -pix_fmt yuv420p \
         "$OUTPUT_FILE"
 else
     echo "Using software encoding (libx264) - optimized for still image..."
-    ffmpeg -loop 1 -framerate 1 -i "$IMAGE_FILE" -i "$AUDIO_FILE" \
+    ffmpeg -y -loop 1 -framerate 1 -i "$IMAGE_FILE" -i "$AUDIO_FILE" \
         -c:v libx264 -tune stillimage -crf 15 -preset fast \
         $COLOR_OPTS \
         -c:a copy -shortest -pix_fmt yuv420p \

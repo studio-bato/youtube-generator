@@ -175,8 +175,8 @@ export async function renderTextLayers(
       <svg width="${maxWidth}" height="${FONT_SIZES.currentArtists + 20}">
         <style>
           @font-face {
-            font-family: 'Klima';
-            src: url('./fonts/Klima Regular/Klima Regular.otf');
+            font-family: '${FONTS.currentArtists.family}';
+            src: url('${FONTS.currentArtists.path}');
           }
         </style>
         <text x="${centerX}" y="${FONT_SIZES.currentArtists}"

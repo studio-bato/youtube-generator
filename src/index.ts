@@ -38,7 +38,9 @@ async function main() {
     console.log(`\nPreparing cover cache...`);
     const coverCache = await prepareCoverCache(config.cover, config.background);
 
-    console.log(`\nGenerating ${config.tracks.length} images for "${config.album}" by ${config.artist}\n`);
+    console.log(
+      `\nGenerating ${config.tracks.length} images for "${config.album}" by ${config.artist}\n`
+    );
 
     const BATCH_SIZE = 4;
     let completed = 0;
@@ -62,12 +64,16 @@ async function main() {
           });
 
           completed++;
-          console.log(`[${completed}/${config.tracks.length}] Generated: ${track.name} → ${filename}`);
+          console.log(
+            `[${completed}/${config.tracks.length}] Generated: ${track.name} → ${filename}`
+          );
         })
       );
     }
 
-    console.log(`\n✓ Successfully generated ${config.tracks.length} images in ${outputDir}`);
+    console.log(
+      `\n✓ Successfully generated ${config.tracks.length} images in ${outputDir}`
+    );
   } catch (error) {
     if (error instanceof Error) {
       console.error(`\nError: ${error.message}`);

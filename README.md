@@ -16,7 +16,7 @@ Generate professional background images for YouTube music videos with album cove
 
 - Bun runtime
 - Album cover image (square format recommended)
-- Fonts included in `fonts/` directory
+- Install fonts included in `fonts/` directory on your system
 
 ```bash
 bun install

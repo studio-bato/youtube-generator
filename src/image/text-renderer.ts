@@ -1,6 +1,7 @@
 import sharp from "sharp";
 import type { Config } from "../config/schema";
 import { FONT_SIZES, LAYOUT } from "./layout";
+import { FONTS } from "../config/fonts";
 
 function escapeXML(text: string): string {
   return text
@@ -52,13 +53,13 @@ export async function renderTextLayers(
     <svg width="${maxWidth}" height="${FONT_SIZES.artist + 20}">
       <style>
         @font-face {
-          font-family: 'Clear Sans';
-          src: url('./fonts/clear-sans/TTF/ClearSans-Regular.ttf');
+          font-family: '${FONTS.artist.family}';
+          src: url('${FONTS.artist.path}');
           font-weight: normal;
         }
       </style>
       <text x="${centerX}" y="${FONT_SIZES.artist}"
-        font-family="Clear Sans, Arial, sans-serif"
+        font-family="${FONTS.artist.family}, Arial, sans-serif"
         font-size="${FONT_SIZES.artist}"
         text-anchor="middle"
         fill="${config.colors.main}">
@@ -79,13 +80,13 @@ export async function renderTextLayers(
     <svg width="${maxWidth}" height="${FONT_SIZES.album + 20}">
       <style>
         @font-face {
-          font-family: 'Clear Sans Thin';
-          src: url('./fonts/clear-sans/TTF/ClearSans-Thin.ttf');
+          font-family: '${FONTS.album.family}';
+          src: url('${FONTS.album.path}');
           font-weight: 100;
         }
       </style>
       <text x="${centerX}" y="${FONT_SIZES.album}"
-        font-family="Clear Sans Thin, Arial, sans-serif"
+        font-family="${FONTS.album.family}, Arial, sans-serif"
         font-size="${FONT_SIZES.album}"
         font-weight="100"
         text-anchor="middle"
@@ -114,12 +115,12 @@ export async function renderTextLayers(
       <svg width="${maxWidth}" height="${lineHeight + 10}">
         <style>
           @font-face {
-            font-family: 'Klima';
-            src: url('./fonts/Klima Regular/Klima Regular.otf');
+            font-family: '${FONTS.trackList.family}';
+            src: url('${FONTS.trackList.path}');
           }
         </style>
         <text x="${centerX}" y="${FONT_SIZES.trackList}"
-          font-family="Klima, Arial, sans-serif"
+          font-family="${FONTS.trackList.family}, Arial, sans-serif"
           font-size="${FONT_SIZES.trackList}"
           font-style="${fontStyle}"
           text-anchor="middle"
@@ -145,12 +146,12 @@ export async function renderTextLayers(
     <svg width="${maxWidth}" height="${FONT_SIZES.currentSong + 20}">
       <style>
         @font-face {
-          font-family: 'Klima';
-          src: url('./fonts/Klima Regular/Klima Regular.otf');
+          font-family: '${FONTS.currentSong.family}';
+          src: url('${FONTS.currentSong.path}');
         }
       </style>
       <text x="${centerX}" y="${FONT_SIZES.currentSong}"
-        font-family="Klima, Arial, sans-serif"
+        font-family="${FONTS.currentSong.family}, Arial, sans-serif"
         font-size="${FONT_SIZES.currentSong}"
         font-weight="bold"
         text-anchor="middle"

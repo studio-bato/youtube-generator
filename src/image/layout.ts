@@ -65,7 +65,7 @@ export const FONT_SIZES: FontSizes = {
 };
 
 export const FONT_PATHS = {
-  clearSansRegular: "./fonts/clear-sans/TTF/ClearSans-Regular.ttf",
-  clearSansThin: "./fonts/clear-sans/TTF/ClearSans-Thin.ttf",
+  clearSansRegular: "./fonts/clear-sans/ClearSans-Regular.ttf",
+  clearSansThin: "./fonts/clear-sans/ClearSans-Thin.ttf",
   klima: "./fonts/Klima Regular/Klima Regular.otf",
 };

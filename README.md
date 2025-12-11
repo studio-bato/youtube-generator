@@ -71,6 +71,10 @@ tracks:
   - **name** - Track name
   - **artists** - Array of featured artists (optional, can be empty)
 
+- **background** - Configuration for the text background
+  - **blurBrightness** - Adjust brightness of the blurred cover (0-2)
+  - **color** - Do not blur image and use solid color instead
+
 ## Output
 
 Images are generated in `./output/[album-name]/` directory with the following naming convention:

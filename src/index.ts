@@ -36,7 +36,7 @@ async function main() {
     }
 
     console.log(`\nPreparing cover cache...`);
-    const coverCache = await prepareCoverCache(config.cover);
+    const coverCache = await prepareCoverCache(config.cover, config.background);
 
     console.log(`\nGenerating ${config.tracks.length} images for "${config.album}" by ${config.artist}\n`);
 

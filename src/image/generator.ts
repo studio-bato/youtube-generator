@@ -15,7 +15,7 @@ export async function generateImage(options: GenerateImageOptions): Promise<void
   try {
     const baseImage = coverCache
       ? await composeBaseFromCache(coverCache)
-      : await composeBase(config.cover);
+      : await composeBase(config);
 
     const baseBuffer = await baseImage.png().toBuffer();
 

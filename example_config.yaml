@@ -5,6 +5,9 @@ colors:
   main: "#ffffff"
   primary: "#DAA520"
   secondary: "#4A9EFF"
+#background: 
+#  blurBrightness: 0.6
+#  color: "#ea8d46"
 tracks:
   - name: "Banm Kalou Banm"
     artists: ["xoticboii"]

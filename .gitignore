@@ -3,3 +3,4 @@ test_output/*
 output/*
 node_modules
 .DS_Store
+output.mp4

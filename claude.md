@@ -46,7 +46,7 @@ The YAML should contain:
 
 - Name of the artist
 - Name of the album
-- Location of the album cover image file
+- Location of the album cover image file (relative to the config file)
 - Main font color
 - Primary font color
 - Secondary font color
@@ -56,6 +56,7 @@ For each track:
 
 - name of the track
 - artists on that track
+- path of the music track file (relative to the config file)
 
 ## Tech
 
@@ -68,3 +69,11 @@ the program should takes the config files and generate one image per track.
 ### Tests
 
 When testing outputs, put them in the test_output folder
+
+# Video generator
+
+The video generator should take the previously generated images and songs and generate one video per track. 
+Use ffmpeg for that. Use a command that takes as input an image and an audio track. The audio track should not be converted to another format or compressed, and the image should not be degraded by compression too. The video should be only an image, then the final file should me small (but not smaller than the original audio file)
+The output videos must be 4K in mp4 format. 
+
+The video generator should be a different TS program that has to be executed mannualy after the image generation tool. In src folder there can be a background-generator.ts and video-generator.ts main scripts instead of one index.ts. Factorize the common code in external files if they share some logic. 

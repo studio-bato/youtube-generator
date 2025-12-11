@@ -54,6 +54,7 @@ export interface FontSizes {
   trackList: number;
   currentSong: number;
   currentArtists: number;
+  label: number;
 }
 
 export const FONT_SIZES: FontSizes = {
@@ -62,6 +63,7 @@ export const FONT_SIZES: FontSizes = {
   trackList: 80,
   currentSong: 160,
   currentArtists: 90,
+  label: 84,
 };
 
 export const FONT_PATHS = {

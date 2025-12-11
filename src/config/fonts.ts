@@ -9,6 +9,7 @@ export interface FontsConfig {
   trackList: FontConfig;
   currentSong: FontConfig;
   currentArtists: FontConfig;
+  label: FontConfig;
 }
 
 export const FONTS: FontsConfig = {
@@ -31,5 +32,9 @@ export const FONTS: FontsConfig = {
   currentArtists: {
     family: "Klima",
     path: "./fonts/klima/Klima-Regular.ttf",
+  },
+  label: {
+    family: "Nunito Sans Regular",
+    path: "./fonts/Nunito_Sans/NunitoSans.ttf",
   },
 };

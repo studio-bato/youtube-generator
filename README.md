@@ -75,6 +75,8 @@ tracks:
   - **blurBrightness** - Adjust brightness of the blurred cover (0-2)
   - **color** - Do not blur image and use solid color instead
 
+- **hide_label** - (true/false) Hide label name (if already on cover)
+
 ## Output
 
 Images are generated in `./output/[album-name]/` directory with the following naming convention:

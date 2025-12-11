@@ -31,17 +31,28 @@ export async function renderTextLayers(
   const albumName = escapeXML(config.album);
   const currentTrack = config.tracks[currentTrackIndex];
 
+  const isAlbum = config.tracks.length > 1;
+
   // Calculate total content height
   const lineHeight = FONT_SIZES.trackList * 1.8;
-  const trackListHeight = config.tracks.length * lineHeight;
+  const trackListHeight = isAlbum ? config.tracks.length * lineHeight : 0;
   const spacingBetweenSections = 120;
-  const spacingAfterArtist = 60;
+  const spacingAfterArtist = isAlbum ? 60 : 0;
   const spacingAfterCurrentSong = 30;
 
-  let totalHeight = FONT_SIZES.artist + spacingAfterArtist + FONT_SIZES.album + spacingBetweenSections + trackListHeight + spacingBetweenSections + FONT_SIZES.currentSong + spacingAfterCurrentSong;
+  let totalHeight =
+    FONT_SIZES.artist +
+    spacingAfterArtist +
+    trackListHeight +
+    spacingBetweenSections +
+    FONT_SIZES.currentSong;
+
+  if (isAlbum) {
+    totalHeight += FONT_SIZES.album + spacingBetweenSections;
+  }
 
   if (currentTrack.artists.length > 0) {
-    totalHeight += FONT_SIZES.currentArtists;
+    totalHeight += spacingAfterCurrentSong + FONT_SIZES.currentArtists;
   }
 
   const elevationDef = `<defs>
@@ -68,6 +79,34 @@ export async function renderTextLayers(
     </filter>
   </defs>`;
 
+  if (!config.hide_label) {
+    const studiobatoSVG = `
+    <svg width="${maxWidth}" height="${FONT_SIZES.label + 20}">
+      <style>
+        @font-face {
+          font-family: '${FONTS.label.family}';
+          font-weight: normal;
+        }
+      </style>
+      ${elevationDef}
+      <text x="0" y="${FONT_SIZES.label}"
+        font-family="${FONTS.label.family}, Arial, sans-serif"
+        font-size="${FONT_SIZES.label}"
+        text-anchor="left"
+        filter="url(#elevation)"
+        fill="${config.colors.main}">
+        STUDIO BATO
+      </text>
+    </svg>
+  `;
+
+    layers.push({
+      buffer: Buffer.from(studiobatoSVG),
+      top: 50,
+      left: LAYOUT.canvas.width - 600,
+    });
+  }
+
   // Start Y position to center content vertically
   const centerY = LAYOUT.rightPanel.height / 2;
   let currentY = centerY - totalHeight / 2;
@@ -78,7 +117,6 @@ export async function renderTextLayers(
       <style>
         @font-face {
           font-family: '${FONTS.artist.family}';
-          src: url('${FONTS.artist.path}');
           font-weight: normal;
         }
       </style>
@@ -87,7 +125,7 @@ export async function renderTextLayers(
         font-family="${FONTS.artist.family}, Arial, sans-serif"
         font-size="${FONT_SIZES.artist}"
         text-anchor="middle"
-          filter="url(#elevation)"
+        filter="url(#elevation)"
         fill="${config.colors.main}">
         ${artistName}
       </text>
@@ -102,7 +140,8 @@ export async function renderTextLayers(
 
   currentY += spacingAfterArtist;
 
-  const albumSvg = `
+  if (isAlbum) {
+    const albumSvg = `
     <svg width="${maxWidth}" height="${FONT_SIZES.album + 20}">
       <style>
         @font-face {
@@ -117,29 +156,30 @@ export async function renderTextLayers(
         font-size="${FONT_SIZES.album}"
         font-weight="100"
         text-anchor="middle"
-          filter="url(#elevation)"
-        fill="${config.colors.primary}">
+        filter="url(#elevation)"
+        fill="${config.colors.secondary}">
         ${albumName}
       </text>
     </svg>
   `;
 
-  layers.push({
-    buffer: Buffer.from(albumSvg),
-    top: currentY,
-    left: panelLeft,
-  });
+    layers.push({
+      buffer: Buffer.from(albumSvg),
+      top: currentY,
+      left: panelLeft,
+    });
+    currentY += FONT_SIZES.album + spacingBetweenSections;
+  }
 
-  currentY += FONT_SIZES.album + spacingBetweenSections;
+  if (isAlbum) {
+    for (let i = 0; i < config.tracks.length; i++) {
+      const track = config.tracks[i];
+      const trackName = escapeXML(track.name);
+      const isCurrent = i === currentTrackIndex;
+      const trackColor = isCurrent ? config.colors.primary : config.colors.main;
+      const fontStyle = isCurrent ? "italic" : "normal";
 
-  for (let i = 0; i < config.tracks.length; i++) {
-    const track = config.tracks[i];
-    const trackName = escapeXML(track.name);
-    const isCurrent = i === currentTrackIndex;
-    const trackColor = isCurrent ? config.colors.secondary : config.colors.main;
-    const fontStyle = isCurrent ? "italic" : "normal";
-
-    const trackSvg = `
+      const trackSvg = `
       <svg width="${maxWidth}" height="${lineHeight + 10}">
         <style>
           @font-face {
@@ -160,16 +200,16 @@ export async function renderTextLayers(
       </svg>
     `;
 
-    layers.push({
-      buffer: Buffer.from(trackSvg),
-      top: Math.round(currentY),
-      left: panelLeft,
-    });
+      layers.push({
+        buffer: Buffer.from(trackSvg),
+        top: Math.round(currentY),
+        left: panelLeft,
+      });
 
-    currentY += lineHeight;
+      currentY += lineHeight;
+    }
+    currentY += spacingBetweenSections;
   }
-
-  currentY += spacingBetweenSections;
 
   const currentSongName = escapeXML(currentTrack.name);
   const currentSongSvg = `
@@ -187,7 +227,7 @@ export async function renderTextLayers(
         font-weight="bold"
         text-anchor="middle"
         filter="url(#elevation)"
-        fill="${config.colors.secondary}">
+        fill="${config.colors.primary}">
         ${currentSongName}
       </text>
     </svg>
@@ -199,16 +239,15 @@ export async function renderTextLayers(
     left: panelLeft,
   });
 
-  currentY += FONT_SIZES.currentSong + spacingAfterCurrentSong;
-
   if (currentTrack.artists.length > 0) {
+    currentY += FONT_SIZES.currentSong + spacingAfterCurrentSong;
+
     const artistsText = escapeXML(currentTrack.artists.join(", "));
     const artistsSvg = `
       <svg width="${maxWidth}" height="${FONT_SIZES.currentArtists + 20}">
         <style>
           @font-face {
             font-family: '${FONTS.currentArtists.family}';
-            src: url('${FONTS.currentArtists.path}');
           }
         </style>
         ${elevationDef}

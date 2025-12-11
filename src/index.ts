@@ -20,6 +20,7 @@ program
   .option("-o, --output <path>", "Output directory", "./output")
   .option("-b, --background", "Generate background images")
   .option("-v, --video", "Generate videos")
+  .option("-m, --mac", "Use OSX VideoToolbox")
   .parse();
 
 const options = program.opts();
@@ -78,8 +79,9 @@ async function generateVideos(config: Config, outputDir: string) {
     const outputPath = join(outputDir, filename);
 
     const inputImage = outputPath + ".png";
+    const useOVT = options.mac ? "-m" : "";
 
-    await $`./generate-video.sh ${inputImage} ${track.audio} ${outputPath}.mp4`.text();
+    await $`./generate-video.sh ${useOVT} ${inputImage} ${track.audio} ${outputPath}.mp4`.quiet();
 
     console.log(
       `[${i + 1}/${config.tracks.length}] Generated: ${

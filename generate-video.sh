@@ -45,7 +45,7 @@ if [ "$USE_VIDEOTOOLBOX" = true ]; then
 else
     echo "Using software encoding (libx264) - optimized for still image..."
     ffmpeg -y -loop 1 -framerate 1 -i "$IMAGE_FILE" -i "$AUDIO_FILE" \
-        -c:v libx264 -tune stillimage -crf 15 -preset fast \
+        -c:v libx264 -tune stillimage -crf 12 -preset fast \
         $COLOR_OPTS \
         -c:a copy -shortest -pix_fmt yuv420p \
         "$OUTPUT_FILE"

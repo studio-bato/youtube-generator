@@ -30,7 +30,7 @@ bun install
 bun run src/index.ts --config input/[album_name].yaml -b
 ```
 
-Use first `-b` to generate background images then `-v` to generate videos. 
+Use first `-b` to generate background images then `-v` to generate videos.
 
 ### Options
 
@@ -39,6 +39,7 @@ Use first `-b` to generate background images then `-v` to generate videos.
 -o, --output <path>   Output directory (default: ./output)
 -b, --background      Generate background covers
 -v, --video           Generate videos
+-m, --mac             On MacOS, use OSX VideoToolbox for compression
 -h, --help            Display help
 -V, --version         Display version
 ```
@@ -76,11 +77,13 @@ See `example_config.yaml` for a complete example configuration.
   - **primary** - Album name color
   - **secondary** - Current track highlight color
 - **tracks** (required) - Array of tracks
+
   - **name** - Track name
   - **artists** - Array of featured artists (optional, can be empty)
   - **audio** - Array of featured artists (relative to config file)
 
 - **background** - Configuration for the text background
+
   - **blurBrightness** - Adjust brightness of the blurred cover (0-2)
   - **blurAmount** - Amount of blur (0-100)
   - **zoom** - Zoom on the blurred image (in percent, 0-100)

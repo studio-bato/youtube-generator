@@ -6,6 +6,7 @@ import { generateImage, slugify } from "./image/generator";
 import { resolve, join } from "path";
 import { mkdirSync, existsSync } from "fs";
 import { validateFonts } from "./utils/validation";
+import { prepareCoverCache } from "./image/composer";
 
 const program = new Command();
 
@@ -34,23 +35,36 @@ async function main() {
       console.log(`Created output directory: ${outputDir}`);
     }
 
+    console.log(`\nPreparing cover cache...`);
+    const coverCache = await prepareCoverCache(config.cover);
+
     console.log(`\nGenerating ${config.tracks.length} images for "${config.album}" by ${config.artist}\n`);
 
-    for (let i = 0; i < config.tracks.length; i++) {
-      const track = config.tracks[i];
-      const trackNumber = (i + 1).toString().padStart(2, "0");
-      const filename = `${trackNumber}-${slugify(track.name)}.png`;
-      const outputPath = join(outputDir, filename);
+    const BATCH_SIZE = 4;
+    let completed = 0;
 
-      console.log(`[${i + 1}/${config.tracks.length}] Generating: ${track.name}`);
+    for (let i = 0; i < config.tracks.length; i += BATCH_SIZE) {
+      const batchEnd = Math.min(i + BATCH_SIZE, config.tracks.length);
+      const batch = config.tracks.slice(i, batchEnd);
 
-      await generateImage({
-        config,
-        currentTrackIndex: i,
-        outputPath,
-      });
+      await Promise.all(
+        batch.map(async (track, batchIdx) => {
+          const trackIndex = i + batchIdx;
+          const trackNumber = (trackIndex + 1).toString().padStart(2, "0");
+          const filename = `${trackNumber}-${slugify(track.name)}.png`;
+          const outputPath = join(outputDir, filename);
 
-      console.log(`    Saved: ${filename}`);
+          await generateImage({
+            config,
+            currentTrackIndex: trackIndex,
+            outputPath,
+            coverCache,
+          });
+
+          completed++;
+          console.log(`[${completed}/${config.tracks.length}] Generated: ${track.name} → ${filename}`);
+        })
+      );
     }
 
     console.log(`\n✓ Successfully generated ${config.tracks.length} images in ${outputDir}`);

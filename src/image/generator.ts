@@ -1,18 +1,21 @@
 import type { Config } from "../config/schema";
-import { composeBase } from "./composer";
+import { composeBase, composeBaseFromCache, type CachedCoverBuffers } from "./composer";
 import { compositeTextOnImage } from "./text-renderer";
 
 export interface GenerateImageOptions {
   config: Config;
   currentTrackIndex: number;
   outputPath: string;
+  coverCache?: CachedCoverBuffers;
 }
 
 export async function generateImage(options: GenerateImageOptions): Promise<void> {
-  const { config, currentTrackIndex, outputPath } = options;
+  const { config, currentTrackIndex, outputPath, coverCache } = options;
 
   try {
-    const baseImage = await composeBase(config.cover);
+    const baseImage = coverCache
+      ? await composeBaseFromCache(coverCache)
+      : await composeBase(config.cover);
 
     const baseBuffer = await baseImage.png().toBuffer();
 

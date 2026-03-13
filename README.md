@@ -72,24 +72,25 @@ See `example_config.yaml` for a complete example configuration.
 - **artist** (required) - Name of the main artist
 - **album** (required) - Album name
 - **cover** (required) - Path to album cover image (square recommended, relative to config file)
+- 
 - **colors** (required) - Color scheme using hex colors (#RRGGBB)
   - **main** - Primary text color
   - **primary** - Album name color
   - **secondary** - Current track highlight color
+  - 
 - **tracks** (required) - Array of tracks
-
   - **name** - Track name
   - **artists** - Array of featured artists (optional, can be empty)
   - **audio** - Array of featured artists (relative to config file)
 
 - **background** - Configuration for the text background
-
   - **blurBrightness** - Adjust brightness of the blurred cover (0-2)
   - **blurAmount** - Amount of blur (0-100)
   - **zoom** - Zoom on the blurred image (in percent, 0-100)
   - **color** - Do not blur image and use solid color instead
 
 - **hide_label** - (true/false) Hide label name (if already on cover)
+- **cover_only** - (true/false) Only use cover for generating videos
 
 ## Output
 

@@ -78,7 +78,10 @@ async function generateVideos(config: Config, outputDir: string) {
     const filename = `${trackNumber}-${slugify(track.name)}`;
     const outputPath = join(outputDir, filename);
 
-    const inputImage = outputPath + ".png";
+    let inputImage = outputPath + ".png";
+    if (config.cover_only) {
+      inputImage = config.cover;
+    }
     const useOVT = options.mac ? "-m" : "";
 
     await $`./generate-video.sh ${useOVT} ${inputImage} ${track.audio} ${outputPath}.mp4`.quiet();

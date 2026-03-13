@@ -47,6 +47,7 @@ export const configSchema = z.object({
   album: z.string().min(1, "Album name is required"),
   cover: z.string().min(1, "Cover image path is required"),
   hide_label: z.boolean().optional(),
+  cover_only: z.boolean().optional(),
   colors: colorsSchema,
   background: backgroundSchema,
   tracks: z.array(trackSchema).min(1, "At least one track is required"),

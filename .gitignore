@@ -4,3 +4,5 @@ output/*
 node_modules
 .DS_Store
 output.mp4
+!.gitkeep
+.idea
